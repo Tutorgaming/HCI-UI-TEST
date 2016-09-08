@@ -30,17 +30,18 @@ class GameButton extends React.Component{
 
     // Send the Button Value
     if(this.props.onClick(this.props.value)){
+        this.props.log(this.props.value,this.props.onClick(this.props.value));//console.log("[Correct]Click Event at " + this.props.value );
         this.setState({
           disabled : true,
           className: "btn btn-primary disabled",
           show: false
         });
-        console.log("[Correct]Click Event at " + this.props.value );
+
     }else{
-        console.log("[Wrong]Click Event at " + this.props.value + "[" + d + "]");
+        this.props.log(this.props.value,this.props.onClick(this.props.value));//console.log("[Wrong]Click Event at " + this.props.value + "[" + d + "]");
     }
 
-    console.log(d.toJSON());
+    //console.log(d.toJSON());
 
 
 

@@ -12,8 +12,22 @@ class App extends React.Component {
     super();
 
     this.state = {
-      currentLevel : 0
+      currentLevel : 0 ,
+      data : []
     };
+  }
+
+  logging(data){
+      /*
+        Data format {
+            level : Number
+            timestamp : Date
+            correct : Boolean
+            button : Number
+        }
+      */
+      this.state.data.push(data);
+
   }
 
   startGame(){
@@ -31,19 +45,20 @@ class App extends React.Component {
 
     switch (this.state.currentLevel) {
 			case 0:
-				return (<WelcomePage changeLevel={this.changeLevel.bind(this)} />);
+				return (<WelcomePage changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
 			case 1:
-				return (<GameLevel level={0} changeLevel={this.changeLevel.bind(this)} />);
+				return (<GameLevel level={0} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
       case 2:
-  			return (<WelcomePage changeLevel={this.changeLevel.bind(this)} />);
+  			return (<WelcomePage changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
 			case 3:
-				return (<GameLevel level={1} changeLevel={this.changeLevel.bind(this)}/>);
+				return (<GameLevel level={1} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
       case 4:
-  			return (<WelcomePage changeLevel={this.changeLevel.bind(this)} />);
+  			return (<WelcomePage changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
 			case 5:
-				return (<GameLevel level={2} changeLevel={this.changeLevel.bind(this)}/>);
+				return (<GameLevel level={2} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
       case 6:
-  			return (<div></div>);
+        console.log(this.state.data);
+  			return (<div>Data Saving {this.state.data.toJSON}</div>);
 		}
 
 

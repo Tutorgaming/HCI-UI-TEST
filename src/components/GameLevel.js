@@ -21,9 +21,16 @@ class GameLevel extends React.Component{
         currentValue : 0,
         buttonCount: question[this.props.level].length
     };
-      console.log("Log Gamme Level " + this.props.level);
+
+      // console.log("Log Gamme Level " + this.props.level);
       var d = new Date();
       console.log(d.toJSON());
+      var data = {
+        level : this.props.level,
+        timestamp : d.toJSON(),
+        button : "Level Loaded"
+      };
+      this.props.log(data);
   }
 
   componentDidMount(){
@@ -43,7 +50,15 @@ class GameLevel extends React.Component{
 
   onButtonClick(clickedValue){
     if(this.state.currentValue == question[this.props.level].length-1){
-      console.log("END");
+      // console.log("END");
+      // var d = new Date();
+      // console.log(d.toJSON());
+      // var data = {
+      //   level : this.props.level,
+      //   timestamp : d.toJSON(),
+      //   button : "Level Ended"
+      // };
+      // this.props.log(data);
       this.props.changeLevel();
       return true;
     }
@@ -57,6 +72,18 @@ class GameLevel extends React.Component{
       }
   }
 
+  logButton(button,correct){
+    var d = new Date();
+    console.log(d.toJSON());
+    var data = {
+      level : this.props.level,
+      timestamp : d.toJSON(),
+      button : button,
+      correct : correct
+    };
+    this.props.log(data);
+  }
+
   generateQuestion(count){
     var buttons_array = [];
     for (var i = 0; i < question[this.props.level].length; i++) {
@@ -65,7 +92,8 @@ class GameLevel extends React.Component{
               disabled={false}
               key={question[this.props.level][i]}
               value={question[this.props.level][i]}
-              onClick={this.onButtonClick.bind(this)}>
+              onClick={this.onButtonClick.bind(this)}
+              log= {this.logButton.bind(this)}>
               {question[this.props.level][i]}
               </GameButton>
         );
