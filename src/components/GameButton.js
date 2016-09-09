@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Button} from 'react-bootstrap'
+//import {Button} from 'react-bootstrap'
 
 class GameButton extends React.Component{
 
@@ -13,18 +13,9 @@ class GameButton extends React.Component{
     };
   }
 
-  handleClickEvent(){
-    /*
-    getDate()	Returns the day of the month (from 1-31)
-    getDay()	Returns the day of the week (from 0-6)
-    getFullYear()	Returns the year
-    getHours()	Returns the hour (from 0-23)
-    getMilliseconds()	Returns the milliseconds (from 0-999)
-    getMinutes()	Returns the minutes (from 0-59)
-    getMonth()	Returns the month (from 0-11)
-    getSeconds()	Returns the seconds (from 0-59)
-    */
+  handleClickEvent(e){
 
+    console.log(e);
     // Time Stamp
     var d = new Date();
 
@@ -59,7 +50,7 @@ class GameButton extends React.Component{
                   textAlign: "center",
                   verticalAlign: "middle",
                   lineHeight: 190 +'px',
-                  fontSize: 40 + 'px',
+                  fontSize: 150 + 'px',
                   borderStyle : "solid",
                   boxSizing : "border"
                 }}

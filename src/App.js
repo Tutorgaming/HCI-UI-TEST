@@ -30,6 +30,21 @@ class App extends React.Component {
 
   }
 
+  sendLog(filename , payloads){
+
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(payloads));
+      element.setAttribute('download', filename);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+
+  }
+
   startGame(){
 
   }
@@ -57,18 +72,17 @@ class App extends React.Component {
 			case 5:
 				return (<GameLevel level={2} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
       case 6:
-        console.log(this.state.data);
-  			return (<div>Data Saving {this.state.data.toJSON}</div>);
-		}
+        //console.log(this.state.data);
+        //var myJsonString = JSON.stringify(this.state.data);
+  			//return (<div>Data Saving {myJsonString}</div>);
+        var d = new Date();
+        //d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
+        var file = {date: d.toString(),data : this.state.data };
+        file = JSON.stringify(file);
 
-
-    // return (
-    //
-    //     <div className="container">
-    //       <h1>จงเรียงลำดับตัวเลขจากน้อยไปมาก</h1>
-    //       <GameLevel level={this.state.currentLevel} changeLevel={this.changeLevel.bind(this)} />
-    //     </div>
-    // );
+        this.sendLog(d.toString(),file);
+        return (<div></div>);
+    }
   }
 }
 

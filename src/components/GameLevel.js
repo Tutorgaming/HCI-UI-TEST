@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Col} from 'react-bootstrap';
+//import {Col} from 'react-bootstrap';
 
 import GameButton from "./GameButton";
 
@@ -24,6 +24,7 @@ class GameLevel extends React.Component{
 
       // console.log("Log Gamme Level " + this.props.level);
       var d = new Date();
+        d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
       console.log(d.toJSON());
       var data = {
         level : this.props.level,
@@ -50,15 +51,6 @@ class GameLevel extends React.Component{
 
   onButtonClick(clickedValue){
     if(this.state.currentValue == question[this.props.level].length-1){
-      // console.log("END");
-      // var d = new Date();
-      // console.log(d.toJSON());
-      // var data = {
-      //   level : this.props.level,
-      //   timestamp : d.toJSON(),
-      //   button : "Level Ended"
-      // };
-      // this.props.log(data);
       this.props.changeLevel();
       return true;
     }
@@ -74,6 +66,7 @@ class GameLevel extends React.Component{
 
   logButton(button,correct){
     var d = new Date();
+    d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
     console.log(d.toJSON());
     var data = {
       level : this.props.level,

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Col} from 'react-bootstrap';
+//import {Col} from 'react-bootstrap';
 import ReactCountdownClock from 'react-countdown-clock'
 
 class WelcomePage extends React.Component{
