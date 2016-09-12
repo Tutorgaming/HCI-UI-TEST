@@ -19,10 +19,14 @@ class App extends React.Component {
     this.state = {
       currentLevel : 0 ,
       data : [],
-      question : []
+      question : [],
+      url : ""
     };
 
     this.generateQuestion();
+
+    this.changeLevel = this.changeLevel.bind(this);
+
   }
 
   generateQuestion(){
@@ -124,6 +128,8 @@ class App extends React.Component {
       // Upload completed successfully, now we can get the download URL
       //console.log("UPLOAD COMPLETED!!!");
       var downloadURL = uploadTask.snapshot.downloadURL;
+      console.log("[Upload]Completed!")
+      callback(downloadURL);
       return downloadURL;
     });
 
@@ -141,19 +147,19 @@ class App extends React.Component {
     switch (this.state.currentLevel) {
       case 0:
 				return (<WelcomePage onClick={this.changeLevel.bind(this)}/>);
-			// case 1:
-			// 	return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-			case 1: //2
+			case 1:
+				return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+			case 2:
 				return (<GameLevel pool={pool} level={0} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-      // case 3:
-  		// 	return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-			case 2: //4:
+      case 3:
+  			return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+			case 4:
 				return (<GameLevel pool={pool} level={1} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
-      // case 5:
-  		// 	return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-			case 3://6:
+      case 5:
+  			return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+			case 6:
 				return (<GameLevel pool={pool} level={2} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
-      case 4://7:
+      case 7:
       return (
         <div style={{
           backgroundColor:"#FFFFFF",
@@ -173,7 +179,7 @@ class App extends React.Component {
             FINISH
 
         </div>);
-        case 5://8:
+        case 8:
 
         return (
           <div style={{
@@ -194,7 +200,7 @@ class App extends React.Component {
               FINISH.
 
           </div>);
-      case 6://9:
+      case 9:
         // Generate Log file here
 
         console.log(generated);
@@ -205,11 +211,18 @@ class App extends React.Component {
         var file = JSON.stringify(rawData);
 
         //Send File to server here
-        var URL = this.sendFileToServer(d.toString(),rawData);
+        var URL = this.sendFileToServer(d.toString(),rawData,function(_url){
+            alert("Upload Completed");
+        });
+
+
         //Send log to client
         this.sendLog(d.toString(),file);
-
+        console.log(URL);
         return (<div></div>);
+
+      case 10:
+        return (<div>data sent {this.state.url} </div>);
     }
   }
 }

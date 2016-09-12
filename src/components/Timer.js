@@ -23,9 +23,9 @@ class Timer extends React.Component{
         <center><div className="container">
           <div className="wrapper">
           <div style={{marginTop: 100 + 'px'}}>
-          <ReactCountdownClock seconds={3}
+          <ReactCountdownClock seconds={0.5}
                    color="#000"
-                   alpha={0.9}
+                   alpha={0}
                    size={500}
                    onComplete={this.props.changeLevel}
                    showMilliseconds={false} /></div>
