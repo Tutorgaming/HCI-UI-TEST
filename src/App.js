@@ -212,17 +212,33 @@ class App extends React.Component {
 
         //Send File to server here
         var URL = this.sendFileToServer(d.toString(),rawData,function(_url){
-            alert("Upload Completed");
+          //
         });
 
 
         //Send log to client
-        this.sendLog(d.toString(),file);
-        console.log(URL);
-        return (<div></div>);
+        return (<div style={{
+          backgroundColor:"#333333",
+          borderColor:"#333333",
+          width: 1500 + 'px' ,
+           height: 1500 + 'px',
+           display:"inline-block",
+           textAlign: "center",
+           verticalAlign: "middle",
+           lineHeight: 190 +'px',
+           fontSize: 150 + 'px',
+           borderStyle : "solid",
+           boxSizing : "border"
+        }}
+            onClick={this.changeLevel.bind(this)}>
+
+            UPLOADING..
+
+        </div>);
 
       case 10:
-        return (<div>data sent {this.state.url} </div>);
+
+        return (<div>data sent </div>);
     }
   }
 }
