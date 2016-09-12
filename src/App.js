@@ -212,7 +212,7 @@ class App extends React.Component {
 
         //Send File to server here
         var URL = this.sendFileToServer(d.toString(),rawData,function(_url){
-          //
+          alert("Upload Completed");
         });
 
 
@@ -237,8 +237,10 @@ class App extends React.Component {
         </div>);
 
       case 10:
-
-        return (<div>data sent </div>);
+        var d = new Date();
+      var rawData = {date: d.toString(), question : generated ,data : this.state.data };
+      var file = JSON.stringify(rawData);
+        return (<div>data sent {file} </div>);
     }
   }
 }
