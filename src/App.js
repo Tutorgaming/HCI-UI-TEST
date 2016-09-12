@@ -25,9 +25,17 @@ class App extends React.Component {
 
     for(var j = 0 ; j <3 ; j++){
         var my_question = [];
-        for(var i = 0 ; i < 6 ; i++){
-            my_question.push(Math.floor((Math.random() * 50) + 1));
+        while(my_question.length < 6){
+          var randomnumber=Math.ceil((Math.random()*6));
+          var found=false;
+          for(var i=0;i<my_question.length;i++){
+        	if(my_question[i]==randomnumber){found=true;break}
+          }
+          if(!found)my_question[my_question.length]=randomnumber;
         }
+        // for(var i = 0 ; i < 6 ; i++){
+        //     my_question.push(Math.floor((Math.random() * 50) + 1));
+        // }
         pool.push(my_question);
     }
     console.log(pool);

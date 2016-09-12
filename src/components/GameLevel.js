@@ -4,16 +4,16 @@ import ReactDOM from 'react-dom';
 
 import GameButton from "./GameButton";
 
-const question= [
-                  [6,3,4,5,10,2],
-                  [1,2,3,4,5,6],
-                  [4,5,2,1,3,6]
-                ];
-const question_value = [
-                  [6,3,4,5,1,2],
-                  [1,2,3,4,5,6],
-                  [4,5,2,1,3,6]
-                ];
+// const question= [
+//                   [6,3,4,5,10,2],
+//                   [1,2,3,4,5,6],
+//                   [4,5,2,1,3,6]
+//                 ];
+// const question_value = [
+//                   [6,3,4,5,1,2],
+//                   [1,2,3,4,5,6],
+//                   [4,5,2,1,3,6]
+//                 ];
 
 class GameLevel extends React.Component{
 
@@ -23,8 +23,8 @@ class GameLevel extends React.Component{
 
     this.state = {
         buttons: [],
-        currentValue : Math.min.apply(null, question[this.props.level]),
-        buttonCount: question[this.props.level].length,
+        currentValue : Math.min.apply(null, this.props.pool[this.props.level]),
+        buttonCount: this.props.pool[this.props.level].length,
         count:0
     };
 
@@ -51,18 +51,18 @@ class GameLevel extends React.Component{
     this.setState({
       buttons: [],
       currentValue : 1,
-      buttonCount: question[this.props.level].length
+      buttonCount: this.props.pool[this.props.level].length
     },function(){
-          this.generateButton(question[this.props.level].length);
+          this.generateButton(this.props.pool[this.props.level].length);
     });
 
   }
 
   onButtonClick(clickedValue){
 
-    var sorted = question[this.props.level].sort(function(a, b){return a-b});
+    var sorted = this.props.pool[this.props.level].sort(function(a, b){return a-b});
     console.log(sorted);
-    if(this.state.count == question[this.props.level].length-1){
+    if(this.state.count == this.props.pool[this.props.level].length-1){
       this.props.changeLevel();
       return true;
     }
@@ -102,15 +102,15 @@ class GameLevel extends React.Component{
 
   generateButton(count){
     var buttons_array = [];
-    for (var i = 0; i < question[this.props.level].length; i++) {
+    for (var i = 0; i < this.props.pool[this.props.level].length; i++) {
         buttons_array.push(
               <GameButton
               disabled={false}
-              key={question[this.props.level][i]}
-              value={question[this.props.level][i]}
+              key={this.props.pool[this.props.level][i]}
+              value={this.props.pool[this.props.level][i]}
               onClick={this.onButtonClick.bind(this)}
               log= {this.logButton.bind(this)}>
-              {question[this.props.level][i]}
+              {this.props.pool[this.props.level][i]}
               </GameButton>
         );
     }
