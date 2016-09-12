@@ -5,6 +5,9 @@ import GameLevel from "./components/GameLevel";
 import WelcomePage from "./components/WelcomePage";
 import Timer from "./components/Timer";
 
+//FireBase
+var firebase = require("firebase");
+
 var pool = [];
 var generated = [];
 
@@ -79,6 +82,52 @@ class App extends React.Component {
 
   }
 
+  sendFileToServer(filename , payloads , callback){
+      // Config params for firebase
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyCYkMSpWVyRUrCOQNNNGLvrqX9he3gcQuk",
+        authDomain: "hci-tutor.firebaseapp.com",
+        databaseURL: "https://hci-tutor.firebaseio.com",
+        storageBucket: "hci-tutor.appspot.com",
+      };
+      firebase.initializeApp(config);
+
+      // Create a storage reference
+      // Get a reference to the storage service, which is used to create references in your storage bucket
+      var storage = firebase.storage();
+
+      // Create a storage reference from our storage service
+      var storageRef = storage.ref();
+
+      // Create file pointer to the object
+      var blob = new Blob([JSON.stringify(payloads, null, 2)], {type : 'text/plain'});
+      var uploadTask = storageRef.child(filename).put(blob);
+
+      // LISTEN TO STATE CHANGE
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      function(snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('[Upload]' + progress + '% done');
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('[Upload]Paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('[Upload]Running');
+            break;
+        }
+      }, function(error) {
+        console.log("UPLOAD ERROR");
+      }, function() {
+      // Upload completed successfully, now we can get the download URL
+      //console.log("UPLOAD COMPLETED!!!");
+      var downloadURL = uploadTask.snapshot.downloadURL;
+      return downloadURL;
+    });
+
+  }
 
   changeLevel(){
       //Next Level
@@ -125,6 +174,7 @@ class App extends React.Component {
 
         </div>);
         case 8:
+
         return (
           <div style={{
             backgroundColor:"#FFFFFF",
@@ -145,17 +195,22 @@ class App extends React.Component {
 
           </div>);
       case 9:
-        //console.log(this.state.data);
-        //var myJsonString = JSON.stringify(this.state.data);
-  			//return (<div>Data Saving {myJsonString}</div>);
+        // Generate Log file here
+
         console.log(generated);
         var d = new Date();
-        //d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
-        var file = {date: d.toString(), question : generated ,data : this.state.data };
-        file = JSON.stringify(file);
 
+        //d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
+        var rawData = {date: d.toString(), question : generated ,data : this.state.data };
+        var file = JSON.stringify(rawData);
+
+        //Send log to client
         this.sendLog(d.toString(),file);
-        return (<div></div>);
+
+        //Send File to server here
+        var URL = this.sendFileToServer(d.toString(),rawData);
+
+        return (<div>{URL}</div>);
     }
   }
 }
