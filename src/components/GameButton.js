@@ -15,7 +15,7 @@ class GameButton extends React.Component{
 
   handleClickEvent(e){
 
-    console.log(e);
+    //console.log(e);
     // Time Stamp
     var d = new Date();
 

@@ -38,9 +38,9 @@ class App extends React.Component {
         // }
         pool.push(my_question);
     }
-    console.log(pool);
+    //console.log(pool);
     //this.setState({question:pool});
-    console.log(this.state.question);
+    //console.log(this.state.question);
   }
 
   logging(data){
@@ -74,7 +74,7 @@ class App extends React.Component {
 
   changeLevel(){
       //Next Level
-      console.log(this.state.currentLevel);
+      //console.log(this.state.currentLevel);
       this.setState({currentLevel : this.state.currentLevel+1 });
   }
 

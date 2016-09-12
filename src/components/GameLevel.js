@@ -31,7 +31,7 @@ class GameLevel extends React.Component{
       // Game Level Log Entry
       var d = new Date();
         d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
-      console.log(d.toJSON());
+      console.log("Game Level entry : "+d.toJSON());
       var data = {
         level : this.props.level,
         timestamp : d.toJSON(),
@@ -40,7 +40,7 @@ class GameLevel extends React.Component{
       this.props.log(data);
 
 
-      console.log(this.props.pool);
+      //console.log(this.props.pool);
   }
 
   componentDidMount(){
@@ -61,7 +61,7 @@ class GameLevel extends React.Component{
   onButtonClick(clickedValue){
 
     var sorted = this.props.pool[this.props.level].sort(function(a, b){return a-b});
-    console.log(sorted);
+    //console.log(sorted);
     if(this.state.count == this.props.pool[this.props.level].length-1){
       this.props.changeLevel();
       return true;
@@ -90,7 +90,7 @@ class GameLevel extends React.Component{
   logButton(button,correct){
     var d = new Date();
     d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
-    console.log(d.toJSON());
+    console.log("Click Detected : "+d.toJSON());
     var data = {
       level : this.props.level,
       timestamp : d.toJSON(),
