@@ -51,6 +51,7 @@ class GameLevel extends React.Component{
     this.setState({
       buttons: [],
       currentValue : 1,
+      count:0,
       buttonCount: this.props.pool[this.props.level].length
     },function(){
           this.generateButton(this.props.pool[this.props.level].length);

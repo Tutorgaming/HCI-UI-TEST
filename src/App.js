@@ -141,19 +141,19 @@ class App extends React.Component {
     switch (this.state.currentLevel) {
       case 0:
 				return (<WelcomePage onClick={this.changeLevel.bind(this)}/>);
-			case 1:
-				return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-			case 2:
+			// case 1:
+			// 	return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+			case 1: //2
 				return (<GameLevel pool={pool} level={0} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-      case 3:
-  			return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-			case 4:
+      // case 3:
+  		// 	return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+			case 2: //4:
 				return (<GameLevel pool={pool} level={1} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
-      case 5:
-  			return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
-			case 6:
+      // case 5:
+  		// 	return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+			case 3://6:
 				return (<GameLevel pool={pool} level={2} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
-      case 7:
+      case 4://7:
       return (
         <div style={{
           backgroundColor:"#FFFFFF",
@@ -173,7 +173,7 @@ class App extends React.Component {
             FINISH
 
         </div>);
-        case 8:
+        case 5://8:
 
         return (
           <div style={{
@@ -194,7 +194,7 @@ class App extends React.Component {
               FINISH.
 
           </div>);
-      case 9:
+      case 6://9:
         // Generate Log file here
 
         console.log(generated);
@@ -204,13 +204,12 @@ class App extends React.Component {
         var rawData = {date: d.toString(), question : generated ,data : this.state.data };
         var file = JSON.stringify(rawData);
 
+        //Send File to server here
+        var URL = this.sendFileToServer(d.toString(),rawData);
         //Send log to client
         this.sendLog(d.toString(),file);
 
-        //Send File to server here
-        var URL = this.sendFileToServer(d.toString(),rawData);
-
-        return (<div>{URL}</div>);
+        return (<div></div>);
     }
   }
 }
