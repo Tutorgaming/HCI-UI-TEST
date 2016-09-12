@@ -87,7 +87,7 @@ class GameLevel extends React.Component{
     //   }
   }
 
-  logButton(button,correct){
+  logButton(button,correct,clickPosition){
     var d = new Date();
     d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
     console.log("Click Detected : "+d.toJSON());
@@ -95,7 +95,8 @@ class GameLevel extends React.Component{
       level : this.props.level,
       timestamp : d.toJSON(),
       button : button,
-      correct : correct
+      correct : correct,
+      clickPosition : clickPosition
     };
     this.props.log(data);
   }

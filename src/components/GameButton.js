@@ -14,14 +14,24 @@ class GameButton extends React.Component{
   }
 
   handleClickEvent(e){
+    //console.log(e.nativeEvent);
 
-    //console.log(e);
-    // Time Stamp
-    var d = new Date();
+    if(e.targetTouches != null){
+      // Touch event logging
+        var rect = e.target.getBoundingClientRect();
+        var x = e.targetTouches[0].pageX - rect.left;
+        var y = e.targetTouches[0].pageY - rect.top;
+        var clickedPosition ={x:x,y:y};
+    }else{
+        // Click event logging
+        var x_mouse = e.nativeEvent.offsetX;
+        var y_mouse = e.nativeEvent.offsetY;
+        var clickedPosition ={x:x_mouse,y:y_mouse};
+    }
 
     // Send the Button Value
     if(this.props.onClick(this.props.value)){
-        this.props.log(this.props.value,this.props.onClick(this.props.value));//console.log("[Correct]Click Event at " + this.props.value );
+        this.props.log(this.props.value,this.props.onClick(this.props.value),clickedPosition);//console.log("[Correct]Click Event at " + this.props.value );
         this.setState({
           disabled : true,
           className: "btn btn-primary disabled",
@@ -29,7 +39,7 @@ class GameButton extends React.Component{
         });
 
     }else{
-        this.props.log(this.props.value,this.props.onClick(this.props.value));//console.log("[Wrong]Click Event at " + this.props.value + "[" + d + "]");
+        this.props.log(this.props.value,this.props.onClick(this.props.value),clickedPosition);//console.log("[Wrong]Click Event at " + this.props.value + "[" + d + "]");
     }
 
     //console.log(d.toJSON());
