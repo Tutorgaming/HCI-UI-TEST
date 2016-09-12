@@ -54,7 +54,8 @@ class GameButton extends React.Component{
                   borderStyle : "solid",
                   boxSizing : "border"
                 }}
-               onClick={this.handleClickEvent.bind(this)} >
+               onTouchStart={this.handleClickEvent.bind(this)}
+               onClick={this.handleClickEvent.bind(this)}  >
 
                     {this.props.children}
 
@@ -63,15 +64,17 @@ class GameButton extends React.Component{
               else
               return (
                 <div style={{
-                  color:"#FFF",
                   backgroundColor:"#FFFFFF",
-                  borderColor:"#FFF",
+                  borderColor:"#FFFFFF",
                   width: 200 + 'px' ,
-                  height: 200 + 'px' ,
-                  display:"inline-block",
-                  textAlign: "center",
-                  verticalAlign: "middle",
-                  lineHeight: 190 +'px'
+                   height: 200 + 'px',
+                   display:"inline-block",
+                   textAlign: "center",
+                   verticalAlign: "middle",
+                   lineHeight: 190 +'px',
+                   fontSize: 150 + 'px',
+                   borderStyle : "solid",
+                   boxSizing : "border"
                 }}>
 
                     &nbsp;

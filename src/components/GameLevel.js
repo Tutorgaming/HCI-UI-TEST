@@ -5,24 +5,30 @@ import ReactDOM from 'react-dom';
 import GameButton from "./GameButton";
 
 const question= [
-                  [1,3,4,5,0,2],
-                  [0,1,2,3,4,5],
-                  [2,1,0],
-                  [4,5,0,2,1,3]
+                  [6,3,4,5,10,2],
+                  [1,2,3,4,5,6],
+                  [4,5,2,1,3,6]
+                ];
+const question_value = [
+                  [6,3,4,5,1,2],
+                  [1,2,3,4,5,6],
+                  [4,5,2,1,3,6]
                 ];
 
 class GameLevel extends React.Component{
 
   constructor(props){
     super(props);
-    this.generateQuestion.bind(this);
+    this.generateButton.bind(this);
+
     this.state = {
         buttons: [],
-        currentValue : 0,
-        buttonCount: question[this.props.level].length
+        currentValue : Math.min.apply(null, question[this.props.level]),
+        buttonCount: question[this.props.level].length,
+        count:0
     };
 
-      // console.log("Log Gamme Level " + this.props.level);
+      // Game Level Log Entry
       var d = new Date();
         d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
       console.log(d.toJSON());
@@ -32,36 +38,53 @@ class GameLevel extends React.Component{
         button : "Level Loaded"
       };
       this.props.log(data);
+
+
+      console.log(this.props.pool);
   }
 
   componentDidMount(){
-    this.generateQuestion(this.state.buttonCount);
+    this.generateButton(this.state.buttonCount);
   }
 
   componentWillReceiveProps(){
     this.setState({
       buttons: [],
-      currentValue : 0,
+      currentValue : 1,
       buttonCount: question[this.props.level].length
     },function(){
-          this.generateQuestion(question[this.props.level].length);
+          this.generateButton(question[this.props.level].length);
     });
 
   }
 
   onButtonClick(clickedValue){
-    if(this.state.currentValue == question[this.props.level].length-1){
+
+    var sorted = question[this.props.level].sort(function(a, b){return a-b});
+    console.log(sorted);
+    if(this.state.count == question[this.props.level].length-1){
       this.props.changeLevel();
       return true;
     }
 
-      if(clickedValue == this.state.currentValue){
-        this.setState({currentValue: this.state.currentValue+1});
-        return true;
-      }else{
-        //do nothing
-        return false;
-      }
+    if(clickedValue == sorted[this.state.count]){
+      this.setState({count:this.state.count+1});
+      return true;
+    }else{
+      return false;
+    }
+
+    // if(this.state.currentValue == question[this.props.level].length){
+    //   this.props.changeLevel();
+    //   return true;
+    // }
+    //
+    //   if(clickedValue == this.state.currentValue){
+    //     this.setState({currentValue: clickedValue+1});
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }
   }
 
   logButton(button,correct){
@@ -77,7 +100,7 @@ class GameLevel extends React.Component{
     this.props.log(data);
   }
 
-  generateQuestion(count){
+  generateButton(count){
     var buttons_array = [];
     for (var i = 0; i < question[this.props.level].length; i++) {
         buttons_array.push(
@@ -95,14 +118,17 @@ class GameLevel extends React.Component{
   }
 
   render(){
+    //<h1>กรุณาเรียงเลขจากน้อยไปมาก </h1>
     return (
         <div className="container">
-            <h1>กรุณาเรียงเลขจากน้อยไปมาก </h1>
-            <div className="row vertical-center-row">
+        <center>
+
+            <div className="row vertical-center-row" style={{width:700+'px',marginTop: 100 + 'px'}}>
               <div id="myid" className="col-md-12">
                   {this.state.buttons}
               </div>
             </div>
+            </center>
         </div>
     );
   }
