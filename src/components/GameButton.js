@@ -15,7 +15,7 @@ class GameButton extends React.Component{
 
   handleClickEvent(e){
     //console.log(e.nativeEvent);
-
+    e.persist();
     if(e.targetTouches != null){
       // Touch event logging
         var rect = e.target.getBoundingClientRect();

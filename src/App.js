@@ -6,6 +6,7 @@ import WelcomePage from "./components/WelcomePage";
 import Timer from "./components/Timer";
 
 var pool = [];
+var generated = [];
 
 // Main App
 class App extends React.Component {
@@ -25,22 +26,29 @@ class App extends React.Component {
 
     for(var j = 0 ; j <3 ; j++){
         var my_question = [];
+        var my_question2 = [];
         while(my_question.length < 6){
           var randomnumber=Math.ceil((Math.random()*6));
           var found=false;
           for(var i=0;i<my_question.length;i++){
-        	if(my_question[i]==randomnumber){found=true;break}
+        	     if(my_question[i]==randomnumber){found=true;break}
           }
-          if(!found)my_question[my_question.length]=randomnumber;
+          if(!found){
+            my_question[my_question.length]=randomnumber;
+            my_question2[my_question.length]=randomnumber;
+          }
         }
         // for(var i = 0 ; i < 6 ; i++){
         //     my_question.push(Math.floor((Math.random() * 50) + 1));
         // }
+        my_question2.splice(0, 1);
+        generated.push(my_question2);
         pool.push(my_question);
     }
     //console.log(pool);
     //this.setState({question:pool});
     //console.log(this.state.question);
+
   }
 
   logging(data){
@@ -113,7 +121,7 @@ class App extends React.Component {
         }}
             onClick={this.changeLevel.bind(this)}>
 
-            &nbsp;
+            FINISH
 
         </div>);
         case 8:
@@ -133,16 +141,17 @@ class App extends React.Component {
           }}
               onClick={this.changeLevel.bind(this)}>
 
-              &nbsp;
+              FINISH.
 
           </div>);
       case 9:
         //console.log(this.state.data);
         //var myJsonString = JSON.stringify(this.state.data);
   			//return (<div>Data Saving {myJsonString}</div>);
+        console.log(generated);
         var d = new Date();
         //d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
-        var file = {date: d.toString(),data : this.state.data };
+        var file = {date: d.toString(), question : generated ,data : this.state.data };
         file = JSON.stringify(file);
 
         this.sendLog(d.toString(),file);
