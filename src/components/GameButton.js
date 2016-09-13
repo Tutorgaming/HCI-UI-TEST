@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import {Button} from 'react-bootstrap'
 
 class GameButton extends React.Component{
 
@@ -41,11 +40,6 @@ class GameButton extends React.Component{
     }else{
         this.props.log(this.props.value,this.props.onClick(this.props.value),clickedPosition);//console.log("[Wrong]Click Event at " + this.props.value + "[" + d + "]");
     }
-
-    //console.log(d.toJSON());
-
-
-
   }
 
   render(){
@@ -54,15 +48,15 @@ class GameButton extends React.Component{
               <div style={{
                  backgroundColor:"#FFFFFF",
                  borderColor:"#000",
-                 width: 200 + 'px' ,
-                  height: 200 + 'px',
-                  display:"inline-block",
-                  textAlign: "center",
-                  verticalAlign: "middle",
-                  lineHeight: 190 +'px',
-                  fontSize: 150 + 'px',
-                  borderStyle : "solid",
-                  boxSizing : "border"
+                 width        : 200 + 'px' ,
+                 height       : 200 + 'px',
+                 display      :"inline-block",
+                 textAlign    : "center",
+                 verticalAlign: "middle",
+                 lineHeight   : 190 +'px',
+                 fontSize     : 150 + 'px',
+                 borderStyle  : "solid",
+                 boxSizing    : "border"
                 }}
                onTouchStart={this.handleClickEvent.bind(this)}
                onClick={this.handleClickEvent.bind(this)}  >
@@ -71,20 +65,20 @@ class GameButton extends React.Component{
 
                </div>
              );
-              else
+            else
               return (
                 <div style={{
                   backgroundColor:"#FFFFFF",
-                  borderColor:"#FFFFFF",
-                  width: 200 + 'px' ,
-                   height: 200 + 'px',
-                   display:"inline-block",
-                   textAlign: "center",
-                   verticalAlign: "middle",
-                   lineHeight: 190 +'px',
-                   fontSize: 150 + 'px',
-                   borderStyle : "solid",
-                   boxSizing : "border"
+                  borderColor  :"#FFFFFF",
+                  width        : 200 + 'px' ,
+                  height       : 200 + 'px',
+                  display      :"inline-block",
+                  textAlign    : "center",
+                  verticalAlign: "middle",
+                  lineHeight   : 190 +'px',
+                  fontSize     : 150 + 'px',
+                  borderStyle  : "solid",
+                  boxSizing    : "border"
                 }}>
 
                     &nbsp;

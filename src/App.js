@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import GameLevel from "./components/GameLevel";
 import WelcomePage from "./components/WelcomePage";
 import Timer from "./components/Timer";
+import CutScene from "./components/CutScene";
 
 //FireBase
 var firebase = require("firebase");
@@ -20,13 +21,18 @@ class App extends React.Component {
       currentLevel : 0 ,
       data : [],
       question : [],
-      url : ""
+      url : "",
+      date : null
     };
 
     this.generateQuestion();
-
     this.changeLevel = this.changeLevel.bind(this);
 
+  }
+
+  setTestDate(){
+    // Set the Test Date on the result dataset
+    this.setState({date : new Date()});
   }
 
   generateQuestion(){
@@ -34,9 +40,12 @@ class App extends React.Component {
     for(var j = 0 ; j <3 ; j++){
         var my_question = [];
         var my_question2 = [];
+
         while(my_question.length < 6){
+          //Generate Random Number from (1 to 6)
           var randomnumber=Math.ceil((Math.random()*6));
           var found=false;
+          // If it exists No Adding
           for(var i=0;i<my_question.length;i++){
         	     if(my_question[i]==randomnumber){found=true;break}
           }
@@ -45,17 +54,15 @@ class App extends React.Component {
             my_question2[my_question.length]=randomnumber;
           }
         }
-        // for(var i = 0 ; i < 6 ; i++){
-        //     my_question.push(Math.floor((Math.random() * 50) + 1));
-        // }
+
+        //Remove first null
         my_question2.splice(0, 1);
+        //Memorize the question
         generated.push(my_question2);
+
+        //Question array to be parse by reference
         pool.push(my_question);
     }
-    //console.log(pool);
-    //this.setState({question:pool});
-    //console.log(this.state.question);
-
   }
 
   logging(data){
@@ -87,7 +94,7 @@ class App extends React.Component {
   }
 
   sendFileToServer(filename , payloads , callback){
-      // Config params for firebase
+
       // Initialize Firebase
       var config = {
         apiKey: "AIzaSyCYkMSpWVyRUrCOQNNNGLvrqX9he3gcQuk",
@@ -97,8 +104,7 @@ class App extends React.Component {
       };
       firebase.initializeApp(config);
 
-      // Create a storage reference
-      // Get a reference to the storage service, which is used to create references in your storage bucket
+      // Create a storage reference to the storage service, which is used to create references in your storage bucket
       var storage = firebase.storage();
 
       // Create a storage reference from our storage service
@@ -108,12 +114,14 @@ class App extends React.Component {
       var blob = new Blob([JSON.stringify(payloads, null, 2)], {type : 'text/plain'});
       var uploadTask = storageRef.child(filename).put(blob);
 
-      // LISTEN TO STATE CHANGE
+      // Listen to the server(Upload) state change
       uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+      // On snapshot Callbacks
       function(snapshot) {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('[Upload]' + progress + '% done');
+
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
             console.log('[Upload]Paused');
@@ -125,89 +133,77 @@ class App extends React.Component {
       }, function(error) {
         console.log("UPLOAD ERROR");
       }, function() {
-      // Upload completed successfully, now we can get the download URL
-      //console.log("UPLOAD COMPLETED!!!");
-      var downloadURL = uploadTask.snapshot.downloadURL;
-      console.log("[Upload]Completed!")
-      callback(downloadURL);
-      return downloadURL;
+        // Upload completed successfully, now we can get the download URL
+        var downloadURL = uploadTask.snapshot.downloadURL;
+        console.log("[Upload]Completed!")
+        callback(downloadURL);
+        return downloadURL;
     });
 
   }
 
   changeLevel(){
       //Next Level
-      //console.log(this.state.currentLevel);
       this.setState({currentLevel : this.state.currentLevel+1 });
+  }
+
+  startGame(){
+      //Start the Testing Game
+      this.setState({currentLevel : this.state.currentLevel+1,
+                            date  : new Date()});
+
   }
 
   // Rendering Method
   render() {
-
+    //State machine
     switch (this.state.currentLevel) {
       case 0:
-				return (<WelcomePage onClick={this.changeLevel.bind(this)}/>);
+				return (<WelcomePage onClick={this.startGame.bind(this)}/>);
 			case 1:
-				return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+				return (<Timer changeLevel={this.changeLevel.bind(this)}
+                       log={this.logging.bind(this)} />);
 			case 2:
-				return (<GameLevel pool={pool} level={0} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+				return (<GameLevel pool={pool}
+                           level={0}
+                           changeLevel={this.changeLevel.bind(this)}
+                           log={this.logging.bind(this)} />);
       case 3:
-  			return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+  			return (<Timer changeLevel={this.changeLevel.bind(this)}
+                       log={this.logging.bind(this)} />);
 			case 4:
-				return (<GameLevel pool={pool} level={1} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
+				return (<GameLevel pool={pool}
+                           level={1}
+                           changeLevel={this.changeLevel.bind(this)}
+                           log={this.logging.bind(this)}/>);
       case 5:
-  			return (<Timer changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)} />);
+  			return (<Timer changeLevel={this.changeLevel.bind(this)}
+                       log={this.logging.bind(this)} />);
 			case 6:
-				return (<GameLevel pool={pool} level={2} changeLevel={this.changeLevel.bind(this)} log={this.logging.bind(this)}/>);
+				return (<GameLevel pool={pool}
+                           level={2}
+                           changeLevel={this.changeLevel.bind(this)}
+                           log={this.logging.bind(this)}/>);
       case 7:
-      return (
-        <div style={{
-          backgroundColor:"#FFFFFF",
-          borderColor:"#FFFFFF",
-          width: 3000 + 'px' ,
-           height: 1500 + 'px',
-           display:"inline-block",
-           textAlign: "center",
-           verticalAlign: "middle",
-           lineHeight: 190 +'px',
-           fontSize: 150 + 'px',
-           borderStyle : "solid",
-           boxSizing : "border"
-        }}
-            onClick={this.changeLevel.bind(this)}>
-
-            FINISH
-
-        </div>);
-        case 8:
-
-        return (
-          <div style={{
-            backgroundColor:"#FFFFFF",
-            borderColor:"#FFFFFF",
-            width: 1500 + 'px' ,
-             height: 1500 + 'px',
-             display:"inline-block",
-             textAlign: "center",
-             verticalAlign: "middle",
-             lineHeight: 190 +'px',
-             fontSize: 150 + 'px',
-             borderStyle : "solid",
-             boxSizing : "border"
-          }}
-              onClick={this.changeLevel.bind(this)}>
-
-              FINISH.
-
-          </div>);
+        return (<CutScene onClick={this.changeLevel.bind(this)}
+                          textColor={"#000000"}
+                          text={"FINISH."}
+                          backgroundColor={"#FFFFFF"} />);
+      case 8:
+        return (<CutScene onClick={this.changeLevel.bind(this)}
+                          textColor={"#000000"}
+                          text={"FINISH.."}
+                          backgroundColor={"#FFFFFF"} />);
       case 9:
         // Generate Log file here
-
         console.log(generated);
-        var d = new Date();
+        var d = this.state.date;
+        var rawData = {
+                       date: d.toString(),
+                       question : generated ,
+                       data : this.state.data
+                     };
 
-        //d.setTime( d.getTime() - d.getTimezoneOffset()*60*1000);
-        var rawData = {date: d.toString(), question : generated ,data : this.state.data };
         var file = JSON.stringify(rawData);
 
         //Send File to server here
@@ -215,32 +211,14 @@ class App extends React.Component {
           alert("Upload Completed");
         });
 
-
         //Send log to client
-        return (<div style={{
-          backgroundColor:"#333333",
-          borderColor:"#333333",
-          width: 1500 + 'px' ,
-           height: 1500 + 'px',
-           display:"inline-block",
-           textAlign: "center",
-           verticalAlign: "middle",
-           lineHeight: 190 +'px',
-           fontSize: 150 + 'px',
-           borderStyle : "solid",
-           boxSizing : "border"
-        }}
-            onClick={this.changeLevel.bind(this)}>
-
-            UPLOADING..
-
-        </div>);
+        return (<CutScene onClick={this.changeLevel.bind(this)} textColor={"#FFFFFF"} text={"UPLOADING.."} backgroundColor={"#333333"} />);
 
       case 10:
-        var d = new Date();
-      var rawData = {date: d.toString(), question : generated ,data : this.state.data };
-      var file = JSON.stringify(rawData);
-        return (<div>data sent {file} </div>);
+        var d = this.state.date;
+        var rawData = {date: d.toString(), question : generated ,data : this.state.data };
+        var file = JSON.stringify(rawData);
+        return (<div>{file} </div>);
     }
   }
 }
